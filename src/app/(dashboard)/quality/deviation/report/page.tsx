@@ -119,7 +119,7 @@ export default function DeviationReportPage() {
   }, [editor])
 
   // AI 优化菜单项
-  const aiMenuItems: MenuProps['items'] = [
+  const aiMenuItems = [
     {
       key: 'polish',
       label: '润色优化',
@@ -135,7 +135,7 @@ export default function DeviationReportPage() {
       label: '简化内容',
       icon: <EditOutlined />,
     },
-  ]
+  ] as const
 
   // 处理 AI 优化
   const handleAIOptimize = async (type: string) => {

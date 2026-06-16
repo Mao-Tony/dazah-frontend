@@ -483,7 +483,7 @@ export default function InspectionTableDetailPage({
                 type="link"
                 size="small"
                 icon={<DownloadOutlined />}
-                onClick={() => handleExportRow(record.id)}
+                onClick={() => record.id && handleExportRow(record.id)}
                 disabled={exporting}
               >
                 导出

@@ -1,7 +1,7 @@
 export interface SubMenuItem {
   key: string
   label: string
-  path: string
+  path?: string
   children?: SubMenuItem[]
 }
 

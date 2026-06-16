@@ -310,6 +310,7 @@ export async function aiAnalyzeRootCause(params: {
   deviation_type: string
   description?: string
   direct_cause?: string
+  root_cause?: string
   investigation_data?: string
 }) {
   const searchParams = new URLSearchParams()

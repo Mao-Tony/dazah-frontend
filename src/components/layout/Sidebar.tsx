@@ -5,19 +5,21 @@ import { Menu } from "antd"
 import type { MenuProps } from "antd"
 import { getModuleByKey, type SubMenuItem } from "@/lib/menu-config"
 
-type MenuItem = Required<MenuProps>['items'][number]
+type MenuItem = NonNullable<MenuProps['items']>[number]
 
 function buildMenuItems(children: SubMenuItem[]): MenuItem[] {
   return children.map((item) => {
     if (item.children && item.children.length > 0) {
       return {
-        key: item.path,
+        type: 'submenu' as const,
+        key: item.key || item.label,
         label: item.label,
         children: buildMenuItems(item.children),
       }
     }
     return {
-      key: item.path,
+      type: 'item' as const,
+      key: item.path || item.key || item.label,
       label: item.label,
     }
   })
@@ -36,7 +38,7 @@ export function Sidebar() {
   // 查找当前选中的菜单项
   const findSelectedKey = (items: SubMenuItem[], path: string): string | null => {
     for (const item of items) {
-      if (path === item.path || path.startsWith(item.path + "/")) {
+      if (item.path && (path === item.path || path.startsWith(item.path + "/"))) {
         return item.path
       }
       if (item.children) {

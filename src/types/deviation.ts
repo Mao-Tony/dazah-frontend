@@ -87,6 +87,19 @@ export interface DeviationUpdate {
   attachments?: string[];
   batch_locked?: boolean;
   batch_lock_reason?: string;
+  status?: string;
+  description?: string;
+  investigation?: {
+    direct_cause?: string;
+    root_cause?: string;
+    investigation_conclusion?: string;
+  };
+  correction?: {
+    correction_measures?: string;
+    responsible_department?: string;
+    plan_completion_date?: string;
+    actual_completion_date?: string;
+  };
 }
 
 export interface Deviation {

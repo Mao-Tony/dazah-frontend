@@ -104,7 +104,7 @@ export default function TemplateManagementPage() {
     modalForm.setFieldsValue({
       name: record.name,
       description: record.description,
-      is_active: record.is_active === 1 || record.is_active === true,
+      is_active: record.is_active,
     })
     setModalVisible(true)
   }
