@@ -2,6 +2,7 @@ export interface SubMenuItem {
   key: string
   label: string
   path: string
+  children?: SubMenuItem[]
 }
 
 export interface ModuleMenu {
@@ -89,10 +90,28 @@ export const moduleMenus: ModuleMenu[] = [
     icon: "check-circle",
     path: "/quality",
     children: [
-      { key: "inspection", label: "质量检验", path: "/quality/inspection" },
-      { key: "deviation", label: "偏差管理", path: "/quality/deviation" },
-      { key: "capa", label: "CAPA管理", path: "/quality/capa" },
-      { key: "change", label: "变更控制", path: "/quality/change" },
+      { key: "reagent-quality", label: "试剂/标准品管理", path: "/quality/reagent" },
+      {
+        key: "deviation",
+        label: "偏差管理",
+        children: [
+          { key: "deviation-list", label: "偏差列表", path: "/quality/deviation" },
+          { key: "deviation-report", label: "偏差报告", path: "/quality/deviation/report" },
+        ],
+      },
+      {
+        key: "deviation-automation",
+        label: "偏差报告自动化",
+        children: [
+          { key: "deviation-automation-create", label: "新建偏差报告", path: "/quality/deviation-automation/create" },
+          { key: "deviation-automation-history", label: "历史任务查询", path: "/quality/deviation-automation/history" },
+          { key: "deviation-automation-sop", label: "SOP规则管理", path: "/quality/deviation-automation/sop" },
+          { key: "deviation-automation-templates", label: "报告模板管理", path: "/quality/deviation-automation/templates" },
+        ],
+      },
+      { key: "inspection-table", label: "原料检验数据", path: "/quality/inspection-table" },
+      { key: "ai-log", label: "AI交互日志", path: "/quality/ai-log" },
+      { key: "ai-config", label: "AI配置设置", path: "/quality/ai-config" },
     ],
   },
   {
@@ -123,6 +142,7 @@ export const moduleMenus: ModuleMenu[] = [
     icon: "archive",
     path: "/warehouse",
     children: [
+      { key: "reagent", label: "试剂/标准品", path: "/warehouse" },
       { key: "inventory", label: "库存管理", path: "/warehouse/inventory" },
       { key: "inout", label: "出入库记录", path: "/warehouse/inout" },
       { key: "stocktake", label: "库存盘点", path: "/warehouse/stocktake" },

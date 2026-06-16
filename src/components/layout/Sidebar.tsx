@@ -3,9 +3,25 @@
 import { usePathname, useRouter } from "next/navigation"
 import { Menu } from "antd"
 import type { MenuProps } from "antd"
-import { getModuleByKey } from "@/lib/menu-config"
+import { getModuleByKey, type SubMenuItem } from "@/lib/menu-config"
 
 type MenuItem = Required<MenuProps>['items'][number]
+
+function buildMenuItems(children: SubMenuItem[]): MenuItem[] {
+  return children.map((item) => {
+    if (item.children && item.children.length > 0) {
+      return {
+        key: item.path,
+        label: item.label,
+        children: buildMenuItems(item.children),
+      }
+    }
+    return {
+      key: item.path,
+      label: item.label,
+    }
+  })
+}
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -15,14 +31,23 @@ export function Sidebar() {
 
   if (!currentModule) return null
 
-  const menuItems: MenuItem[] = currentModule.children.map((item) => ({
-    key: item.path,
-    label: item.label,
-  }))
+  const menuItems = buildMenuItems(currentModule.children)
 
-  const selectedKey = currentModule.children.find(
-    (item) => pathname === item.path || pathname.startsWith(item.path + "/")
-  )?.path || currentModule.children[0]?.path
+  // 查找当前选中的菜单项
+  const findSelectedKey = (items: SubMenuItem[], path: string): string | null => {
+    for (const item of items) {
+      if (path === item.path || path.startsWith(item.path + "/")) {
+        return item.path
+      }
+      if (item.children) {
+        const found = findSelectedKey(item.children, path)
+        if (found) return found
+      }
+    }
+    return null
+  }
+
+  const selectedKey = findSelectedKey(currentModule.children, pathname) || currentModule.children[0]?.path
 
   const handleClick: MenuProps['onClick'] = ({ key }) => {
     router.push(key)
@@ -38,7 +63,7 @@ export function Sidebar() {
 
       <Menu
         mode="inline"
-        selectedKeys={[selectedKey]}
+        selectedKeys={[selectedKey || '']}
         items={menuItems}
         onClick={handleClick}
         className="sidebar-menu flex-1"

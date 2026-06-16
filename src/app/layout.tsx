@@ -1,11 +1,6 @@
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
 import "./globals.css"
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-})
+import { AntdProvider } from "@/components/providers/AntdProvider"
 
 export const metadata: Metadata = {
   title: "工厂管理平台",
@@ -18,8 +13,10 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="zh-CN" className={`${inter.variable} h-full`}>
-      <body className="h-full antialiased">{children}</body>
+    <html lang="zh-CN">
+      <body className="h-full antialiased">
+        <AntdProvider>{children}</AntdProvider>
+      </body>
     </html>
   )
 }
